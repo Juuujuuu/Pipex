@@ -6,7 +6,7 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 18:36:49 by julmarti          #+#    #+#             */
-/*   Updated: 2022/01/25 18:37:47 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 16:53:42 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdlib.h> // pour exit 
 # include <string.h> // pour strlen
 # include <sys/wait.h> // pour wait
-# include <sys/types.h> // pour wait
+# include <sys/types.h> // pour wait et le type pid_t 
 
+int ft_pipex();
+// créer une structure 
 #endif

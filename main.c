@@ -6,7 +6,12 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 18:20:09 by julmarti          #+#    #+#             */
-/*   Updated: 2022/01/25 18:20:15 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 18:19:11 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+int main(int argc, char **argv)
+{
+    ft_pipex();
+    return(0);
+}

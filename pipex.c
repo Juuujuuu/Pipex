@@ -6,67 +6,86 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 12:49:44 by julmarti          #+#    #+#             */
-/*   Updated: 2022/01/25 19:15:17 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/01/28 18:16:04 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int pipex()
+/// Check que tout va bien lors de la création de pipe 
+int error_check_pipe(int *fd)
 {
-      int fd[2]; // fd[0] est le descripteur pour lire -  fd[1] est le descripteur pour écrire
-      int bufsize;
-      char buf[bufsize+1];
-      int pid; // nom par convention quand on parle d'un fork , pour Personnal ID 
-
-      pid = fork();
-
-      // GESTION D'ERREUR 
-      if (pipe(fd) == -1)  // La valeur de retour de pipe() est 0 en cas de succès, -1 si erreur
+   if (pipe(fd) == -1)  // La valeur de retour de pipe() est 0 en cas de succès, -1 si erreur
              printf("Impossible d'ouvrir le tube\n");
-            return 1; // erreur
+            return 1; 
 
       // vérifier si les fichier existent bien et si nous avons bien les permissions (check avec la fonction access() )
+      //open('file1.txt', O_WRONLY);
+      //open('file2.txt', O_RDONLY);
+}
 
-      // SI TOUT VA BIEN (i.e mon tube s'ouvre convenablement), on continue 
+/// Check lors du fork
+int   error_check_pid(pid_t pid)
+{
       if (pid < 0) // si le fork échoue 
              printf("Fork a échoué");
-            return 2; // erreur 
+            return 2; 
+}
 
-      if (pid == 0) // le fork a réussi
-      {   
-      // nous sommes dans le processus enfant. 
-      first_process(f1, cmd1); // à définir 
-      bufsize = 100; 
-      // dup2(); pour dupliquer et swap le fd. Penser à sécuriser si dup2 < 0
-            close (fd[1]); // je ferme la partie d'écriture
-            while (read(fd[0], buf, bufsize) != 0) // tant que je peux lire 
-                  printf("%s\n", buf);
-            close (fd[0]); // je ferme la partie de lecture 
+/// First process, issu du fork -> process enfant 
+void first_process(int *fd, char *buf)
+{
+     
+      close (fd[1]); // je ferme la partie d'écriture
+      while (read(fd[0], buf, strlen(buf)) != 0) // tant que je peux lire 
+            printf("%s\n", buf);
+     // dup2(fd[1], stdout); pour dupliquer et swap le fd. Penser à sécuriser si dup2 < 0
+      close (fd[0]); // je ferme la partie de lecture 
       // execve(const char *pathname, char *const argv[], char *const envp[]);
-            exit(0); 
-      }
-      else // si pid > 0, j'écris 
-      {
-      // Nous sommes dans le processus parent.
-      second_process(f2, cmd2); // a définir
-      // dup2(); pour dupliquer et swap le fd
-            close (fd[0]); // je ferme la partie lecture 
-            write(fd[1], "Hello World \n", strlen("Hello World\n"));
-            close(fd[1]); // je ferme la partie d'écriture 
-            exit(0);
-      }
-      // close(fd[0]); close(fd[1]); SINON exit ? 
-      // wait(int *wstatus);
-      return (0);
+}
+
+/// Second process, process parent
+void  second_process(int *fd, char *buf)
+{   
+      close (fd[0]); // je ferme la partie lecture 
+      write(fd[1], buf, strlen(buf));
+   //   dup2(fd[0], stdin); pour dupliquer et swap le fd
+      close(fd[1]); // je ferme la partie d'écriture 
+}
+
+void ft_pipex(int argc,char **argv)
+{
+      int fd[2]; // fd[0] est le descripteur pour lire -  fd[1] est le descripteur pour écrire
+      pid_t pid; // nom par convention quand on parle d'un fork , pour Personnal ID. type par convention également
+      int retour_err_pipe;
+      int retour_err_pid;
+      char *buf;
+
+      pipe(fd); // création du pipe 
+      retour_err_pipe = error_check_pipe(fd); // check si les fichiers sont accessibles 
+      if (retour_err_pipe > 0)
+            printf("ERREUR RENCONTREE DANS L'OUVERTURE DES FICHIERS");
+      pid = fork(); // appel système pour créer des processus. Il ne prend pas d'argument et retourne un process ID
+      retour_err_pid = error_check_pid(pid);
+      if (pid == 0) // le fork a réussi, on commence le processus enfant
+            first_process(fd, buf); // avec le f1 et cmd1
+      else // si pid > 0, j'écris, donc go processus parent
+            second_process(fd, buf); // avec f2 et cmd2
+      close(fd[0]); 
+      close(fd[1]);
+      // wait ? 
 } 
 // RAPPEL : on execute le programme like dis : ./pipex infile cmd1 cmd2 outfile. infile correspond à notre stdin et outfile à notre stdout. 
 
 
 // http://www.zeitoun.net/articles/communication-par-tuyau/start
 
-
-// REFLEXIONS : Est-ce que je fais 2 pid : pid1 pour la cmd1 et pid2 pour cmd2 /*
+/* STEPS :
+1. Qu'est ce qu'un pipe ? Qu'est-ce qu'un fork ? Pourquoi les utiliser ici ? DONE
+2. Gestion des erreurs et des droits EN COURS 
+3. Gestion des arguments ( parsing ?)
+4. Die 
+*/
 
 
 /* FONCTIONS AUTORISEES  : 
