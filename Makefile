@@ -6,7 +6,7 @@
 #    By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/28 18:16:33 by julmarti          #+#    #+#              #
-#    Updated: 2022/01/28 18:18:20 by julmarti         ###   ########.fr        #
+#    Updated: 2022/02/01 14:28:19 by julmarti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ NAME = pipex.a
 
 SRCSB =       
 
-SRCS =  pipex.c \
+SRCS =  pipex.c         \
+        processus.c     \
+        error_check.c   \
                
 CC = gcc
 

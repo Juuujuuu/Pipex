@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "string.h": "c",
-        "pipex.h": "c"
+        "pipex.h": "c",
+        "processus.C": "cpp",
+        "wait.h": "c",
+        "ft_split.C": "cpp",
+        "fcntl.h": "c"
     }
 }
