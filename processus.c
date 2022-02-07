@@ -6,30 +6,32 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:26:00 by julmarti          #+#    #+#             */
-/*   Updated: 2022/02/01 17:06:52 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/02/07 16:09:32 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 /// First process, issu du fork -> process enfant 
-void first_process(int *fd, char **argv)
+void first_process(int *fd, char *cmd1)
 {
       close (fd[1]); // je ferme la partie d'écriture
-      while (read(fd[0], argv, strlen(argv[1])) != 0) // tant que je peux lire 
-            printf("J'ai lu le fichier 1 : %s\n", argv[1]);
-     // dup2(fd[1], stdout); pour dupliquer et swap le fd. Penser à sécuriser si dup2 < 0. dup2(f1, STDIN) ferme le fd[1]
+      // appeler ft_parsing
+      dup2(fd[1], STDOUT_FILENO); // pour dupliquer et swap le fd. Penser à sécuriser si dup2 < 0. dup2(f1, STDIN) ferme le fd[1]
       close (fd[0]); // je ferme la partie de lecture 
-      // execve(const char *pathname, char *const argv[], char *const envp[]);
+      execve(cmd1);
+      printf("La commande 1 a été identifiée: %s\n", cmd1);
 }
 
 /// Second process, process parent
-void  second_process(int *fd, char **argv)
+void  second_process(int *fd, char *cmd2)
 {   
       close (fd[0]); // je ferme la partie lecture 
-      write(fd[1], argv, strlen(argv[1]));
-   //   dup2(fd[0], stdin); pour dupliquer et swap le fd
+      // appeler ft_parsing
+      dup2(fd[0], STDIN_FILENO); // pour dupliquer et swap le fd
       close(fd[1]); // je ferme la partie d'écriture 
+      execve(cmd2);
+      printf ("La commande 2 a été identifiée: %s\n", cmd2);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 18:36:49 by julmarti          #+#    #+#             */
-/*   Updated: 2022/02/01 17:11:59 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/02/07 15:31:56 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <fcntl.h> // pour les flags d'open
 # include "../Libft/libft.h" // pour ft_split
 
-void    ft_pipex(char **argv);
+void    ft_pipex(int *fd, char **argv);
 int     error_check_pipe(int *fd);
 int     error_check_pid(pid_t pid);
 void    first_process(int *fd, char **argv);
