@@ -6,13 +6,13 @@
 /*   By: julmarti <julmarti@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 18:20:09 by julmarti          #+#    #+#             */
-/*   Updated: 2022/02/07 15:55:51 by julmarti         ###   ########.fr       */
+/*   Updated: 2022/02/11 15:57:21 by julmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
     int fd[2]; // fd[0] est le descripteur pour lire -  fd[1] est le descripteur pour écrire
 
@@ -31,6 +31,7 @@ int main(int argc, char **argv)
     if (fd[0] < 0 || fd[1] < 0)
         return(-1);
     else 
-        ft_pipex(fd, argv);
+        ft_pipex(fd, argv, envp);
     return(0);
 }
+// Le troisième paramètre, envp, est un tableau de pointeurs vers des variables d’environnement. Le tableau envp est arrêté par un pointeur null. 
